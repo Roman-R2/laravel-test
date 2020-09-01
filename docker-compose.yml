@@ -1,0 +1,49 @@
+version: '3'
+services:
+  laravel-test-nginx:
+    container_name: laravel-test-nginx
+    build:
+      context: laravel-test/docker/development
+      dockerfile: nginx.docker
+    volumes:
+      - ./laravel-test:/app
+    depends_on:
+      - laravel-test-php-fpm
+    ports:
+      - "8080:80"   # http
+
+  laravel-test-php-fpm:
+    container_name: laravel-test-php-fpm
+    build:
+      context: laravel-test/docker/development
+      dockerfile: php-fpm.docker
+    volumes:
+      - ./laravel-test:/app
+    depends_on:
+      - laravel-test-postgres
+  
+  laravel-test-php-cli:
+    container_name: laravel-test-php-cli
+    build:
+      context: laravel-test/docker/development
+      dockerfile: php-cli.docker
+    volumes:
+      - ./laravel-test:/app
+    depends_on:
+      - laravel-test-postgres
+  
+  laravel-test-postgres:
+    container_name: laravel-test-postgres
+    image: postgres:11.2-alpine
+    volumes:
+      - laravel-test-postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: App
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: App
+    ports:
+      - "54321:5432"
+
+volumes:
+  laravel-test-postgres:
+
