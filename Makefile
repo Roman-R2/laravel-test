@@ -4,7 +4,11 @@ restart: docker-down docker-up
 init: docker-down laravel-test-clear docker-pull docker-duild docker-up laravel-test-init
 
 my:
-	sudo chown -R roman:roman laravel-test
+	sudo chown -R ${USER}:${USER} laravel-test
+	sudo chown -R ${USER}:www-data ./laravel-test/test/storage
+	sudo chown -R ${USER}:www-data ./laravel-test/test/bootstrap/cache
+	chmod -R 775 ./laravel-test/test/storage
+	chmod -R 775 ./laravel-test/test/bootstrap/cache
 
 docker-up:
 	docker-compose up -d

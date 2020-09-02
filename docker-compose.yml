@@ -31,6 +31,7 @@ services:
       - ./laravel-test:/app
     depends_on:
       - laravel-test-postgres
+    working_dir: /app/test
   
   laravel-test-postgres:
     container_name: laravel-test-postgres
@@ -44,6 +45,15 @@ services:
     ports:
       - "54321:5432"
 
+  laravel-test-redis:
+    image: redis:3.0-alpine
+    volumes:
+      - laravel-test-redis:/data
+    command:
+      - 'redis-server'
+      - '--requirepass secret'
+
 volumes:
   laravel-test-postgres:
+  laravel-test-redis:
 
