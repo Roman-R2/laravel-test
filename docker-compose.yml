@@ -53,6 +53,15 @@ services:
       - 'redis-server'
       - '--requirepass secret'
 
+  laravel-test-node-cli:
+    container_name: laravel-test-node-cli
+    build:
+      context: laravel-test/docker/development
+      dockerfile: node.docker
+    volumes:
+      - ./laravel-test:/app
+    working_dir: /app/test
+
 volumes:
   laravel-test-postgres:
   laravel-test-redis:
