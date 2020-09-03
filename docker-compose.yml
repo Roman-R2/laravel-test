@@ -21,6 +21,7 @@ services:
       - ./laravel-test:/app
     depends_on:
       - laravel-test-postgres
+      - laravel-test-redis
   
   laravel-test-php-cli:
     container_name: laravel-test-php-cli

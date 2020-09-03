@@ -1,14 +1,7 @@
 up: docker-up
 down: docker-down
 restart: docker-down docker-up
-init: docker-down laravel-test-clear docker-pull docker-duild docker-up laravel-test-init
-
-my:
-	sudo chown -R ${USER}:${USER} laravel-test
-	sudo chown -R ${USER}:www-data ./laravel-test/test/storage
-	sudo chown -R ${USER}:www-data ./laravel-test/test/bootstrap/cache
-	chmod -R 775 ./laravel-test/test/storage
-	chmod -R 775 ./laravel-test/test/bootstrap/cache
+init: docker-down laravel-test-clear docker-pull docker-duild docker-up laravel-test-init assets-install assets-dev
 
 docker-up:
 	docker-compose up -d
@@ -24,6 +17,15 @@ docker-pull:
 
 docker-duild:
 	docker-compose build
+
+tests:
+	docker-compose run --rm laravel-test-php-cli vendor/bin/phpunit --colors=always
+
+assets-install:
+	docker-compose run --rm laravel-test-node-cli yarn install
+
+assets-dev:
+	docker-compose run --rm laravel-test-node-cli yarn dev
 
 laravel-test-init: laravel-test-wait-db laravel-test-ready
 
@@ -41,3 +43,10 @@ git:
 	git add .
 	git commit -m "${M}"
 	git push
+
+my:
+	sudo chown -R ${USER}:${USER} laravel-test
+	sudo chown -R ${USER}:www-data ./laravel-test/test/storage
+	sudo chown -R ${USER}:www-data ./laravel-test/test/bootstrap/cache
+	chmod -R 775 ./laravel-test/test/storage
+	chmod -R 775 ./laravel-test/test/bootstrap/cache

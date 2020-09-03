@@ -9,6 +9,8 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
         <!-- Styles -->
         <style>
             html, body {
@@ -83,7 +85,11 @@
                 <div class="title m-b-md">
                     Laravel
                 </div>
-
+                <div>
+                    <button class="btn btn-outline-dark">
+                        Hello
+                    </button>
+                </div>
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>
