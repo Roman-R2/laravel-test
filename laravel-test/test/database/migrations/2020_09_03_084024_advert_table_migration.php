@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Test extends Migration
+class AdvertTableMigration extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class Test extends Migration
      */
     public function up()
     {
-        Schema::create('advert', function (Blueprint $table) {
-            $table->uuid()->unique();
-            $table->string('advert_name');
-            $table->string('advert_description');
+        Schema::create('adverts', function (Blueprint $table) {
+            $table->id()->unique();
+            $table->text('advert_name');
+            $table->text('advert_description');
             $table->json('advert_images');
             $table->float('advert_price');
             $table->timestamps();
@@ -30,6 +30,6 @@ class Test extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('adverts');
     }
 }

@@ -1,7 +1,7 @@
 up: docker-up
 down: docker-down
 restart: docker-down docker-up
-init: docker-down laravel-test-clear docker-pull docker-duild docker-up laravel-test-init assets-install assets-dev
+init: docker-down laravel-test-clear docker-pull docker-duild docker-up laravel-test-init assets-install assets-dev seeds
 
 docker-up:
 	docker-compose up -d
@@ -50,3 +50,9 @@ my:
 	sudo chown -R ${USER}:www-data ./laravel-test/test/bootstrap/cache
 	chmod -R 775 ./laravel-test/test/storage
 	chmod -R 775 ./laravel-test/test/bootstrap/cache
+
+seeds:
+	docker-compose run --rm laravel-test-php-cli php artisan db:wipe
+	docker-compose run --rm laravel-test-php-cli php artisan migrate
+	docker-compose run --rm laravel-test-php-cli composer dump-autoload -o
+	docker-compose run --rm laravel-test-php-cli php artisan db:seed
