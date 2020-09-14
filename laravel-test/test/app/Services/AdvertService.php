@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Dto\ImageDTO;
 use App\Entity\Advert;
+use App\Jobs\Advert\SaveImageURL;
 use Illuminate\Http\Request;
 
 class AdvertService
@@ -28,23 +30,43 @@ class AdvertService
     public function addNewAdvert(Request $request)
     {
 
+        $advert = Advert::make([
+            'advert_name' => $request['title'],
+            'advert_description' => $request['description'],
+            'advert_images' => [],
+            'advert_price' => $request['price']
+        ]);
+
+        $advert->saveOrFail();
+
+        $images = $this->getImageDTO($request);
+
+        $this->sendToQueue($advert, $images);
+
+        return $advert->id;
+    }
+
+    public function sendToQueue(Advert $advert, ImageDTO $images)
+    {
+        try {
+            SaveImageURL::dispatch($advert, $images);
+        } catch (\Exception $e) {
+            throw new \DomainException(
+                'Queue error. Code: ' . $e->getCode() .
+                '/nMessage' . $e->getMessage() .
+                '/nTrace: ' . $e->getTrace()
+            );
+        }
+    }
+
+    public function getImageDTO(Request $request): ImageDTO
+    {
         $images = [];
 
         empty($request['photo1']) ?: $images[] = $request['photo1'];
         empty($request['photo2']) ?: $images[] = $request['photo2'];
         empty($request['photo3']) ?: $images[] = $request['photo3'];
 
-        $advert = Advert::make([
-            'advert_name' => $request['title'],
-            'advert_description' => $request['description'],
-            'advert_images' => $images,
-            'advert_price' => $request['price']
-        ]);
-
-        //$advert->getAttributes()
-
-        $advert->saveOrFail();
-
-        return $advert->id;
+        return new ImageDTO($images);
     }
 }
