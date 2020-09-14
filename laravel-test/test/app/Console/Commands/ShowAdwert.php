@@ -25,7 +25,7 @@ class ShowAdwert extends Command
             return false;
         };
 
-        $images = json_decode($advert->getAttribute('advert_images'));
+        $images = $advert->getAttribute('advert_images');
 
         $this->line('---------------- Show advert with id ' . $id . ' ---------------------');
         $this->line('Advert title: ' . $advert->getAttribute('advert_name'));
