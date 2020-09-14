@@ -18,6 +18,6 @@ class Advert extends Eloquent
     ];
 
     protected $casts = [
-
+        'advert_images' => 'array'
     ];
 }

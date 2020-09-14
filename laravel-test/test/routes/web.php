@@ -16,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('index');
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
+Route::get('/add', 'HomeController@addAdvert')->name('add.advert');
+Route::get('/adverts', 'HomeController@showAdvertList')->name('show.advert.list');
+

@@ -1,7 +1,7 @@
 up: docker-up
 down: docker-down
 restart: docker-down docker-up
-init: docker-down laravel-test-clear docker-pull docker-duild docker-up laravel-test-init assets-install assets-dev seeds
+init: docker-down laravel-test-clear docker-pull docker-duild docker-up laravel-test-init assets-install assets-dev seeds horizon
 
 docker-up:
 	docker-compose up -d
@@ -37,6 +37,9 @@ laravel-test-wait-db:
 
 laravel-test-ready:
 	docker run --rm -v ${PWD}/laravel-test:/app --workdir=/app alpine touch .ready
+
+horizon:
+	docker-compose run --rm laravel-test-php-cli php artisan horizon
 
 git:
 	git status

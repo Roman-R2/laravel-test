@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(Advert::class, function (Faker $faker) {
 
-    $fakeImagesJson = json_encode([
+    $fakeImages = [
         $faker->imageUrl(),
         $faker->imageUrl(),
         $faker->imageUrl()
-    ]);
+    ];
 
     return [
         'advert_name' => $faker->sentence(4),
         'advert_description' => $faker->paragraph,
-        'advert_images' => $fakeImagesJson,
+        'advert_images' => $fakeImages,
         'advert_price' => $faker->randomFloat(),
     ];
 });
